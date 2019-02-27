@@ -55,17 +55,23 @@ decade_avg_cache = {1990: 2.4}
 
 
 # ----------------------
-# get_user_decade_rating
+# get_user_average_rating
 # ----------------------
 
-def get_user_decade_rating(user,year):
+def get_user_average_rating(user):
 
-    try:
-        return CUSTOMER_AVERAGE_RATING_YEARLY[(user,year)]
-    except KeyError:
-        return None
+    rating = 0
+    count = 0
+    for n in range(1999,2006):
+        try:
+            rating += CUSTOMER_AVERAGE_RATING_YEARLY[(user,n)]
+            count += 1
+        except KeyError: #the movie was not rated in that decade
+            pass
 
-#print(get_user_decade_rating(845841, 2005)) #check for function REMOVE
+    return (round((rating / count),2))
+
+#print(get_user_average_rating(845841)) #check for function REMOVE
 
 # ----------------------
 # get_avg_movie_rating
@@ -82,7 +88,7 @@ def get_avg_movie_rating(movie):
         except KeyError: #the movie was not rated in that decade
             pass
 
-    return (round((rating / count),1))
+    return (round((rating / count),2))
 
 
 #print(get_avg_movie_rating(3058)) #check for function REMOVE
