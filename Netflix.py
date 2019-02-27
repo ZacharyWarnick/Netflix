@@ -8,8 +8,7 @@ from math import sqrt
 import pickle
 from requests import get
 from os import path
-from numpy import sqrt, square, mean, subtract
-
+from numpy import mean, square, subtract, sqrt
 
 def create_cache(filename):
     """
@@ -32,18 +31,61 @@ def create_cache(filename):
 
 
 AVERAGE_RATING = 3.60428996442
-ACTUAL_CUSTOMER_RATING = create_cache(
-    "cache-actualCustomerRating.pickle")
+#ACTUAL_CUSTOMER_RATING = create_cache(
+#   "cache-actualCustomerRating.pickle")
 AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
-    "cache-movieAverageByYear.pickle")
-YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
+   "cache-movieAverageByYear.pickle")
+#YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
 CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
-    "cache-customerAverageRatingByYear.pickle")
+   "cache-customerAverageRatingByYear.pickle")
 
+
+'''
+for key in AVERAGE_MOVIE_RATING_PER_YEAR:
+    if key[0] == 3058:
+        print(key,":",AVERAGE_MOVIE_RATING_PER_YEAR[key])
+
+print(len(AVERAGE_MOVIE_RATING_PER_YEAR))
+'''
+#print(CUSTOMER_AVERAGE_RATING_YEARLY)
 
 actual_scores_cache ={10040: {2417853: 1, 1207062: 2, 2487973: 3}}
 movie_year_cache = {10040: 1990}
 decade_avg_cache = {1990: 2.4}
+
+
+# ----------------------
+# get_user_decade_rating
+# ----------------------
+
+def get_user_decade_rating(user,year):
+
+    try:
+        return CUSTOMER_AVERAGE_RATING_YEARLY[(user,year)]
+    except KeyError:
+        return None
+
+#print(get_user_decade_rating(845841, 2005)) #check for function REMOVE
+
+# ----------------------
+# get_avg_movie_rating
+# ----------------------
+
+def get_avg_movie_rating(movie):
+
+    rating = 0
+    count = 0
+    for n in range(1999,2006):
+        try:
+            rating += AVERAGE_MOVIE_RATING_PER_YEAR[(movie,n)]
+            count += 1
+        except KeyError: #the movie was not rated in that decade
+            pass
+
+    return (round((rating / count),1))
+
+
+#print(get_avg_movie_rating(3058)) #check for function REMOVE
 
 # ------------
 # netflix_eval
