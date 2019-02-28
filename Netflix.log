@@ -1,3 +1,15 @@
+commit bb1f2ca259b438d2fc6b5dd77ec04afaa9764310
+Author: ZackerWins <zawarnick1@gmail.com>
+Date:   Wed Feb 27 15:58:24 2019 -0600
+
+    rename functions to accurately represent what cache they access
+
+commit 94390dc6854ad55e2ce05c1e53cfccedadb31482
+Author: ZackerWins <zawarnick1@gmail.com>
+Date:   Tue Feb 26 21:46:56 2019 -0600
+
+    Added two functions which get the average rating for a movie, and how a user rates a decade
+
 commit f0c4831d71e4a46cf288a06ec588ba51aafc0b51
 Author: ZackerWins <zawarnick1@gmail.com>
 Date:   Tue Feb 26 14:02:53 2019 -0600
