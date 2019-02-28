@@ -68,6 +68,17 @@ def get_user_average_rating(user):
 
 #print(get_user_average_rating(845841)) #check for function REMOVE
 
+def total_user_average():
+
+    total = 0
+    count = 0
+    for key in CUSTOMER_AVERAGE_RATING_YEARLY:
+        total += CUSTOMER_AVERAGE_RATING_YEARLY[key]
+        count += 1
+    
+    return float(total/count)
+
+AVERAGE_RATING = round(total_user_average(),2)
 # ----------------------
 # get_avg_movie_rating
 # ----------------------
@@ -90,8 +101,6 @@ def get_avg_movie_rating(movie):
         return None
 
 
-#print(get_avg_movie_rating(3058)) #check for function REMOVE
-
 # ------------
 # make_prediction
 # ------------
@@ -104,17 +113,17 @@ def make_prediction(movie,user,userWeight = 0.5):
 
     complement = 1.0 - userWeight
 
-    if user_pred is None: #The user has no rating data,but does exist. We predict the USER's average .
-        return movie_pred
-    if movie_pred is None: #The movie has no rating data, but does exist. We predict the MOVIE's average.
-        return user_pred
-    #else:                    # We have no data to predict either case. Assume the movie is average.
-    #   return AVERAGE_RATING
+    #year = movie_year_cache[movie]
 
-    weighted_prediction = ((userWeight * movie_pred)
-                         + (complement * user_pred))
+    if user_pred is None: #The user has no rating data,but does exist. We predict the USER's average .
+        return user_pred
+    if movie_pred is None: #The movie has no rating data, but does exist. We predict the MOVIE's average.
+        return movie_pred
+
+    weighted_prediction = round((userWeight * movie_pred)
+                         + (complement * user_pred),1)
     
-    return round(weighted_prediction,1)
+    return round(weighted_prediction,2)
 
 
 # ------------
@@ -142,22 +151,21 @@ def netflix_eval(reader, writer) :
         else:
 		# It's a customer
             current_customer = int(line)
-            prediction = make_prediction(movie_ID, int(current_customer))
+            prediction = (make_prediction(movie_ID,current_customer))
+            if prediction is None:
+                prediction = AVERAGE_RATING
             predictions.append(prediction)
 
             try:
                 actual.append(ACTUAL_CUSTOMER_RATING[(int(current_customer), movie_ID)])
             except KeyError:
-                actual.append(0)
+                actual.append(get_avg_movie_rating(movie_ID))
 
-            writer.write(str(prediction)) 
+            writer.write(str(prediction))
             writer.write('\n')
     # calculate rmse for predictions and actuals
     rmse = sqrt(mean(square(subtract(predictions, actual))))
     writer.write(str(rmse)[:4] + '\n')
-
-#print(ACTUAL_CUSTOMER_RATING[(30878,1)])
-#print(make_prediction(1,30878))
 
 
 
