@@ -40,11 +40,11 @@ YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
 CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
    "cache-customerAverageRatingByYear.pickle")
 
-'''
+
 actual_scores_cache ={10040: {2417853: 1, 1207062: 2, 2487973: 3}}
 movie_year_cache = {10040: 1990}
 decade_avg_cache = {1990: 2.4}
-'''
+
 
 # ----------------------
 # get_user_average_rating
