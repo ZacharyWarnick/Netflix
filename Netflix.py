@@ -114,7 +114,7 @@ def make_prediction(movie,user,userWeight = 0.5):
     weighted_prediction = ((userWeight * movie_pred)
                          + (complement * user_pred))
     
-    return round(weighted_prediction,2)
+    return round(weighted_prediction,1)
 
 
 # ------------

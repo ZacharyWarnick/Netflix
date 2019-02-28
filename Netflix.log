@@ -1,3 +1,15 @@
+commit f79609dba027bbe4855e954ebead2345604da4c1
+Author: ZackerWins <zawarnick1@gmail.com>
+Date:   Wed Feb 27 19:14:12 2019 -0600
+
+    failed to reinstate acceptance caches
+
+commit 40702cf82fb5cb58eefdea82932aaa3de0dc7325
+Author: ZackerWins <zawarnick1@gmail.com>
+Date:   Wed Feb 27 19:10:07 2019 -0600
+
+    fixed syntax in get_ functions. Finalized runtime
+
 commit bb1f2ca259b438d2fc6b5dd77ec04afaa9764310
 Author: ZackerWins <zawarnick1@gmail.com>
 Date:   Wed Feb 27 15:58:24 2019 -0600
