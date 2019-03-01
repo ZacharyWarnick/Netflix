@@ -10,7 +10,6 @@ from requests import get
 from os import path
 from numpy import mean, square, subtract, sqrt
 
-#print(sqrt(mean(square(subtract(3.7,4)))))
 def create_cache(filename):
     """
     filename is the name of the cache file to load
@@ -31,9 +30,9 @@ def create_cache(filename):
     return cache
 
 
-AVERAGE_RATING = 3.6
+AVERAGE_RATING = 3.60
 ACTUAL_CUSTOMER_RATING = create_cache(
-   "cache-actualCustomerRating.pickle")
+   "jcl3342-expandedActualCustomerRating.pickle")
 AVERAGE_USER_RATING = create_cache("cache-averageCustomerRating.pickle")
 AVERAGE_MOVIE_RATING = create_cache("cache-averageMovieRating.pickle")
 
@@ -103,7 +102,7 @@ def netflix_eval(reader, writer) :
             predictions.append(prediction)
 
 
-            actual.append(ACTUAL_CUSTOMER_RATING[(int(current_customer), movie_ID)])
+            actual.append(ACTUAL_CUSTOMER_RATING[movie_ID,int(current_customer)])
 
             writer.write(str(prediction))
             writer.write('\n')
