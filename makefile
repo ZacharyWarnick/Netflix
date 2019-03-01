@@ -8,7 +8,7 @@ FILES :=                              \
     RunNetflix.out                    \
     RunNetflix.py                     \
     TestNetflix.out                   \
-    TestNetflix.py
+    TestNetflix.py                    \
 
     cs329e-netflix-tests/ZackerWins-RunNetflix.in   \
     cs329e-netflix-tests/ZackerWins-RunNetflix.out  \
