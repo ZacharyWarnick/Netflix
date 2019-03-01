@@ -31,19 +31,11 @@ def create_cache(filename):
     return cache
 
 
-AVERAGE_RATING = 3.60428996442
+AVERAGE_RATING = 3.6
 ACTUAL_CUSTOMER_RATING = create_cache(
    "cache-actualCustomerRating.pickle")
-AVERAGE_MOVIE_RATING_PER_YEAR = create_cache(
-   "cache-movieAverageByYear.pickle")
-YEAR_OF_RATING = create_cache("cache-yearCustomerRatedMovie.pickle")
-CUSTOMER_AVERAGE_RATING_YEARLY = create_cache(
-   "cache-customerAverageRatingByYear.pickle")
-
-
-actual_scores_cache ={10040: {2417853: 1, 1207062: 2, 2487973: 3}}
-movie_year_cache = {10040: 1990}
-decade_avg_cache = {1990: 2.4}
+AVERAGE_USER_RATING = create_cache("cache-averageCustomerRating.pickle")
+AVERAGE_MOVIE_RATING = create_cache("cache-averageMovieRating.pickle")
 
 
 # ----------------------
@@ -52,55 +44,21 @@ decade_avg_cache = {1990: 2.4}
 
 
 def get_user_average_rating(user):
-
-    rating = 0
-    count = 0
-    for n in range(1999,2006):
-        try:
-            rating += (CUSTOMER_AVERAGE_RATING_YEARLY[(user, n)])
-            count += 1
-        except KeyError: #the movie was not rated in that decade
-            pass
     try:
-        return (round((rating / count),2))
-    except:
-        return None
+        return round(AVERAGE_USER_RATING[user],2)
+    except KeyError:
+        return AVERAGE_RATING
 
-#print(get_user_average_rating(845841)) #check for function REMOVE
-
-def total_user_average():
-
-    total = 0
-    count = 0
-    for key in CUSTOMER_AVERAGE_RATING_YEARLY:
-        total += CUSTOMER_AVERAGE_RATING_YEARLY[key]
-        count += 1
-    
-    return float(total/count)
-
-AVERAGE_RATING = round(total_user_average(),2)
 # ----------------------
 # get_avg_movie_rating
 # ----------------------
 
 def get_avg_movie_rating(movie):
-    assert type(movie) is int
-
-    rating = 0.0
-    count = 0
-    for n in range(1999,2006): #iterate through the seven possible years of data
-        try:
-            rating += (AVERAGE_MOVIE_RATING_PER_YEAR[(movie, n)])
-            count += 1
-        except KeyError: #the movie was not rated in that decade
-            pass
 
     try:
-        return (round((rating / count),2)) #if count is zero then we do not have data for the movie, yield to user
-    except:
-        return None
-
-
+        return round(AVERAGE_MOVIE_RATING[movie],2)
+    except KeyError:
+        return AVERAGE_RATING
 # ------------
 # make_prediction
 # ------------
@@ -113,17 +71,10 @@ def make_prediction(movie,user,userWeight = 0.5):
 
     complement = 1.0 - userWeight
 
-    #year = movie_year_cache[movie]
-
-    if user_pred is None: #The user has no rating data,but does exist. We predict the USER's average .
-        return user_pred
-    if movie_pred is None: #The movie has no rating data, but does exist. We predict the MOVIE's average.
-        return movie_pred
-
     weighted_prediction = round((userWeight * movie_pred)
                          + (complement * user_pred),1)
     
-    return round(weighted_prediction,2)
+    return (weighted_prediction)
 
 
 # ------------
@@ -143,26 +94,20 @@ def netflix_eval(reader, writer) :
 		# It's a movie
             current_movie = line.rstrip(':')
             movie_ID = int(current_movie)
-            #pred = movie_year_cache[int(current_movie)]
-            #pred = (pred // 10) *10
-            #prediction = decade_avg_cache[pred]
             writer.write(line)
             writer.write('\n')
         else:
 		# It's a customer
             current_customer = int(line)
             prediction = (make_prediction(movie_ID,current_customer))
-            if prediction is None:
-                prediction = AVERAGE_RATING
             predictions.append(prediction)
 
-            try:
-                actual.append(ACTUAL_CUSTOMER_RATING[(int(current_customer), movie_ID)])
-            except KeyError:
-                actual.append(get_avg_movie_rating(movie_ID))
+
+            actual.append(ACTUAL_CUSTOMER_RATING[(int(current_customer), movie_ID)])
 
             writer.write(str(prediction))
             writer.write('\n')
+
     # calculate rmse for predictions and actuals
     rmse = sqrt(mean(square(subtract(predictions, actual))))
     writer.write(str(rmse)[:4] + '\n')
