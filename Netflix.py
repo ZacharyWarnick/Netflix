@@ -101,8 +101,10 @@ def netflix_eval(reader, writer) :
             prediction = (make_prediction(movie_ID,current_customer))
             predictions.append(prediction)
 
-
-            actual.append(ACTUAL_CUSTOMER_RATING[movie_ID,int(current_customer)])
+            try:
+                actual.append(ACTUAL_CUSTOMER_RATING[movie_ID,int(current_customer)])
+            except KeyError: #may happen because I am using another student's cache
+                actual.append(AVERAGE_RATING)
 
             writer.write(str(prediction))
             writer.write('\n')
