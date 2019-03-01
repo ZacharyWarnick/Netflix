@@ -15,7 +15,6 @@ FILES :=                              \
     cs329e-netflix-tests/ZackerWins-TestNetflix.out \
     cs329e-netflix-tests/ZackerWins-TestNetflix.py  \
 
-
 ifeq ($(shell uname), Darwin)          # Apple
     PYTHON   := python3
     PIP      := pip3
